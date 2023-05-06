@@ -18,14 +18,17 @@ Before login, please register a user, and then select a desirable role/permissio
 If you want to contribute, please take note of the current infrastructure
 - To add new Tables 
     - You need to add new models under models (Register foreign, unique keys)
-        <pre>
-        <code>
+        <pre> uniques: list[str] = [] </pre>
+        <pre> localForeigns: list[dict[str, str, str]] = [] </pre>
+        <pre> targetForeigns: list[dict[str, str, str]] = [] </pre>
+
+        ```python
         class User (Entity):
             uniques: list[str] = [
                 "username"
             ]
         
-    <mark>  localForeigns: list[dict[str, str, str]] = [] </mark>
+            localForeigns: list[dict[str, str, str]] = []
         
             targetForeigns: list[dict[str, str, str]] = [
                 {"column": "permissionId", "reference": "Id", "onTable": "Permission"}
@@ -47,7 +50,6 @@ If you want to contribute, please take note of the current infrastructure
                 self.gender       = self.dataAnnotation(gender, str)
                 self.age          = self.dataAnnotation(age, int)
                 self.permissionId = self.dataAnnotation(permissionId, str)
-        </code>
-        </pre>
+        ```
     - Register imports and database files in DbContext service
     - Create a new manager to manage dbContext
