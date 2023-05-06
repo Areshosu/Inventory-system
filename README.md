@@ -95,3 +95,7 @@ If you want to contribute, please take note of the current infrastructure
         │ ├ DbContext.py
         │ └ NewEntityManager.py
         ```
+
+## License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
