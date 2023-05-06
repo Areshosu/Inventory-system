@@ -5,6 +5,7 @@ Before using this console app, please ensure you've ran the compulsary executabl
 
 ```bash
 py -m Database.Seeders.Seeder
+py MainProgram.py # To start the mainApp
 ```
 
 ## Usage
