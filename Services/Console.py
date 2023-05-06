@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 import time
-
+import inspect
 
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -32,6 +32,10 @@ def showMessageAndRedirectToMainPage(self, message: str):
         time.sleep(1)
 
     self.menuPage()
+
+def getCallerName():
+    frame = inspect.currentframe().f_back
+    return frame.f_code.co_name
 
 def logToFile(message: str):
     file = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "Storage", "logging.txt"), mode="w")

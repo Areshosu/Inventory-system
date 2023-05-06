@@ -3,6 +3,7 @@ from Models.Item import Item
 from Models.Permission import Permission
 from Models.User import User
 
+from Services.Console import getCallerName
 from Services.Exception.DbException import DbException
 from typing import Type
 import json
@@ -59,7 +60,7 @@ class DbContext:
         return self.retrievedRecords[0]
     
     # Relationship
-    def _loadRelatedRecords(self, dbclass: Type[Entity], isParentForeign: bool=True):
+    def _loadRelatedRecords(self, dbclass: Type[Entity], isParentForeign: bool):
         childOrParentForeign = self.selectedEntity.targetForeigns if isParentForeign == True else self.selectedEntity.localForeigns
 
         relationshipDB = next((relation for relation in childOrParentForeign if relation["onTable"] == dbclass.__name__), None)
@@ -69,19 +70,25 @@ class DbContext:
         relationFile.close()
         return relationshipDB
 
-    def includeOneToOne(self, dbclass: Type[Entity]):
-        relationshipDB = self._loadRelatedRecords(dbclass)
+    def includeOneToOne(self, dbclass: Type[Entity], isParentForeign: bool = True):
+        relationshipDB = self._loadRelatedRecords(dbclass, isParentForeign)
         for row in self.retrievedRecords:
             for relationRow in self.retrievedRelationRecords:
-                if relationshipDB is not None and row[relationshipDB["column"]] == relationRow[relationshipDB["reference"]]:
+                if relationshipDB is None:
+                    raise DbException(f"No such relationship {getCallerName()} ({dbclass.__name__})")
+
+                if row[relationshipDB["column"]] == relationRow[relationshipDB["reference"]]:
                     row.setdefault(f"{dbclass.__name__.lower()}", {}).update(relationRow)
                     break
         return self
 
-    def includeOneToMany(self, dbclass: Type[Entity]):
-        relationshipDB = self._loadRelatedRecords(dbclass)
+    def includeOneToMany(self, dbclass: Type[Entity], isParentForeign: bool = True):
+        relationshipDB = self._loadRelatedRecords(dbclass, isParentForeign)
         for row in self.retrievedRecords:
             for relationRow in self.retrievedRelationRecords:
+                if relationshipDB is None:
+                    raise DbException(f"No such relationship {getCallerName()} ({dbclass.__name__})")
+
                 if relationshipDB is not None and row[relationshipDB["column"]] == relationRow[relationshipDB["reference"]]:
                     row.setdefault(f"{dbclass.__name__.lower()}s", []).append(relationRow)
         return self
@@ -141,15 +148,24 @@ class DbContext:
                 raise DbException(f"Duplicated unique constraint ({uniqueColumn})")
         
         # Foreign constrains
-        for foreignConstrain in foreigns:
+        for i, foreignConstrain in enumerate(foreigns):
+            isParentForeign = False if i == 0 else True
             for localForeign in foreignConstrain:
                 relationEntity = globals()[localForeign["onTable"]]
-                relationshipDB = self._loadRelatedRecords(relationEntity, isParentForeign=False) # load relationRecords & returns relationDB
+                relationshipDB = self._loadRelatedRecords(relationEntity, isParentForeign) # load relationRecords & returns relationDB
                 for savingRow in onSavingRecords:
-                    haveValidRelation = False
-                    for relation in self.retrievedRelationRecords:
-                        if savingRow[relationshipDB["column"]] == relation[relationshipDB["reference"]]:
-                            haveValidRelation = True; break
-                    if (haveValidRelation == False):
-                        raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {relationEntity.__name__}, at column {relationshipDB['column']} on column {relationshipDB['reference']} ({savingRow[relationshipDB['column']]})")
+                    if (isParentForeign == True):
+                        haveValidRelation = False
+                        for relation in self.retrievedRelationRecords:
+                            if savingRow[relationshipDB["column"]] == relation[relationshipDB["reference"]]:
+                                haveValidRelation = True; break
+                        if (haveValidRelation == False):
+                            raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {relationEntity.__name__}, at column {relationshipDB['column']} on column {relationshipDB['reference']} ({savingRow[relationshipDB['column']]})")
+                    else:
+                        haveValidRelation = True
+                        for relation in self.retrievedRelationRecords:
+                            if savingRow[relationshipDB["column"]] == relation[relationshipDB["reference"]]:
+                                haveValidRelation = False; break
+                        if (haveValidRelation == False):
+                            raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {relationEntity.__name__}, at column {relationshipDB['column']} on column {relationshipDB['reference']} ({savingRow[relationshipDB['column']]})")
             pass
