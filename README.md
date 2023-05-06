@@ -26,9 +26,11 @@ If you want to contribute, please take note of the current infrastructure
         
             localForeigns: list[dict[str, str, str]] = []
         
+        <pre>
             targetForeigns: list[dict[str, str, str]] = [
                 {"column": "permissionId", "reference": "Id", "onTable": "Permission"}
             ]
+        </pre>
         
             def __init__(self,
                             username: str,
