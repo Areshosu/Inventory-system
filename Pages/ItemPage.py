@@ -1,0 +1,121 @@
+import json
+from typing import Type
+from Services.Console import *
+from Services.ItemManager import ItemManager
+
+class ItemPage:
+    def __init__(self, itemManager: Type[ItemManager]):
+        self.itemManager = itemManager
+        self.menuPage()
+
+    def menuPage(self):
+        clear_console()
+        option = int(input("How would you like to manage Items? \n\n" \
+                                "[0] Show Item List \n" \
+                                "[1] Find Item \n" \
+                                "[2] Create Item \n" \
+                                "[3] Update Item \n" \
+                                "[4] Delete Item \n\n" \
+                                "Select Item [0-3] (Default 0): ") or 0)
+        
+        clear_console()
+        if (option == 4):
+            self._deleteItemPage()
+        elif (option == 3):
+            self._updateItemPage()
+        elif (option == 2):
+            self._createItemPage()
+        elif (option == 1):
+            self._findItemPage()
+        else:
+            self._showItemPage()
+
+    def _showItemPage(self):
+        print("Retrieving items ...")
+        items = self.itemManager.getAsync()
+
+        clear_console()
+        print("Results: \n")
+        for i, item in enumerate(items):
+            print(f"({i}) - {json.dumps(item)}")
+        input("\nPress any key to continue ...")
+        showMessageAndRedirectToMainPage(self, message="Redirecting you to menu page ...")
+        pass
+
+    def _findItemPage(self):
+        print("Retrieving items ...")
+        items = self.itemManager.getAsync()
+        print("Result may vary depending on your query (Leave it blank if you aren't sure) \n")
+        
+        code = input("What's it item code: ")
+        name = input("What's it item name: ")
+        description = input("What's it item description: ")
+        unit = input("What's it item unit: ")
+        price = float(input("What's it item price: ") or 0)
+        minimum = int(input("What's it item minimum: ") or 0)
+        filtered_items = filter(lambda x: 
+                                    (not code or x["code"] == code) and
+                                    (not name or x["name"] == name) and
+                                    (not description or x["description"] == description) and
+                                    (not unit or x["unit"] == unit) and
+                                    (not price or x["price"] == price)and
+                                    (not minimum or x["minimum"] == minimum), items)
+        
+        clear_console()
+        print("Search results: \n")
+        for i, item in enumerate(filtered_items):
+            print(f"({i}) - {json.dumps(item)}")
+        input("\nPress any key to continue ...")
+        showMessageAndRedirectToMainPage(self, message="Redirecting you to menu page ...")
+        
+    def _createItemPage(self):
+        newCode = input("What's it code: ")
+        newName = input("What's it item name: ")
+        newDescription = input("What's it item description: ")
+        newUnit = input("What's it item unit: ")
+        newPrice = float(input("What's it item price: ") or 0)
+        newMinimum = int(input("What's it item minimum: ") or 0)
+
+        self.itemManager.createAsync({
+                "code": newCode,
+                "name": newName,
+                "description": newDescription,
+                "unit": newUnit,
+                "price": newPrice,
+                "quantity": 0,
+                "minimum": newMinimum
+            })
+        input("\nItem created successfully ...")
+        showMessageAndRedirectToMainPage(self, message="Redirecting you to menu page ...")
+
+    def _updateItemPage(self):
+        itemId = input("Which item would you like to update, Please input Id: ")
+        item = self.itemManager.findById(itemId)
+
+        if (item is None):
+            showMessageAndRedirectToMainPage(self, message=f"Item ({itemId}) not found ...")
+
+        print("Please fill up the form, except for those you want it to remain")
+        updateCode = input("What's it code: ") or item["code"]
+        updateName = input("What's it item name: ") or item["name"]
+        updateDescription = input("What's it item description: ") or item["description"]
+        updateUnit = input("What's it item unit: ") or item["unit"]
+        updatePrice = float(input("What's it item price: ") or item["price"])
+        updateMinimum = int(input("What's it item minimum: ") or item["minimum"])
+        updateQuantity = item["quantity"]
+
+        self.itemManager.updateAsync( itemId, {
+                "code": updateCode,
+                "name": updateName,
+                "description": updateDescription,
+                "unit": updateUnit,
+                "price": updatePrice,
+                "quantity": updateQuantity,
+                "minimum": updateMinimum
+        })
+        showMessageAndRedirectToMainPage(self, message=f"Item ({itemId}) successfully updated ...")
+
+    def _deleteItemPage(self):
+        itemId = input("Which item would you like to delete, Please input Id: ")
+        self.itemManager.deleteAsync(itemId)
+        showMessageAndRedirectToMainPage(self, message=f"Item ({itemId}) successfully removed ...")

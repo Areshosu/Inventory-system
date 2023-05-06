@@ -1,1 +1,1 @@
-[]
+[{"username": "Alex", "password": "password", "gender": "male", "age": 20, "permissionId": "4dcdd026-c5e3-4961-8459-f03d4b417399", "Id": "82b7b7bb-0739-4ff6-b318-3caef4e2575f", "permission": {"Id": "4dcdd026-c5e3-4961-8459-f03d4b417399", "name": "admin", "canManageUser": true, "canManagePermission": true, "canManageItem": true, "canStockTaking": true, "canSearchItem": true, "canViewReplenishStockList": true, "canReplenishStock": true}}]

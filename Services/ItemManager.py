@@ -1,25 +1,25 @@
-from Models.Permission import Permission
+from Models.Item import Item
 from Services.DbContext import DbContext
 
-class PermissionManager:
-    dbContext = DbContext(Permission)
+class ItemManager:
+    dbContext = DbContext(Item)
 
     def getAsync(self):
         return self.dbContext.toListAsync()
 
-    def findByRoleName(self, roleName: str):
-        return self.dbContext.firstOrDefaultAsync("name", roleName)
+    def findByItemName(self, itemName: str):
+        return self.dbContext.firstOrDefaultAsync("name", itemName)
     
     def findById(self, id: str):
         return self.dbContext.findAsync(id)
 
-    def createAsync(self, newPermission: dict):
-        self.dbContext.add(newPermission)
+    def createAsync(self, newItem: dict):
+        self.dbContext.add(newItem)
         self.dbContext.saveChangesAsync()
         pass
 
-    def updateAsync(self, id: str, updatePermission: dict):
-        self.dbContext.update(id, updatePermission)
+    def updateAsync(self, id: str, updateItem: dict):
+        self.dbContext.update(id, updateItem)
         self.dbContext.saveChangesAsync()
         pass
 

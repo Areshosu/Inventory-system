@@ -1,9 +1,11 @@
 from Services.Console import *
 from Services.UserManager import UserManager
 from Services.PermissionManager import PermissionManager
-from Services.InventoryManager import InventoryManager
+from Services.ItemManager import ItemManager
 
+from Pages.ItemPage import ItemPage
 from Pages.UserPage import UserPage
+from Pages.PermissionPage import PermissionPage
 
 while True:
     clear_console()
@@ -12,9 +14,9 @@ while True:
     CurrentUserPermission = None
     
     # Injecting modules
+    itemManager = ItemManager()
     userManager = UserManager()
     permissionManager = PermissionManager()
-    inventoryManager = InventoryManager()
     
     wantsToRegister = int(input("Would you like to login or register?\n" \
                             "[0] Login \n" \
@@ -76,21 +78,11 @@ while True:
     # Management
 
     if (whatToDo is 1 and  CurrentUserPermission["canManageItem"] is True):
-        WhatToManage = int(input("How would you like to manage Items? \n\n" \
-                        "[0] Show Item List \n" \
-                        "[1] Find Item \n" \
-                        "[2] Create Item \n" \
-                        "[3] Delete Item \n\n" \
-                        "Select Item [0-3] (Default 0): ") or 0)
+        ItemPage(itemManager)
         pass
 
     elif (whatToDo is 2 and  CurrentUserPermission["canManagePermission"] is True):
-        WhatToManage = int(input("How would you like to manage Permissions? \n\n" \
-                        "[0] Show Permission List \n" \
-                        "[1] Find Permission \n" \
-                        "[2] Create Permission \n" \
-                        "[3] Delete Permission \n\n" \
-                        "Select Item [0-3] (Default 0): ") or 0)
+        PermissionPage(permissionManager)
         pass
 
     elif (whatToDo is 3 and  CurrentUserPermission["canStockTaking"] is True):
