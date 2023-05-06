@@ -56,7 +56,7 @@ class PermissionPage:
         canViewReplenishStockList = input("Does it allow to view replenish stock (y/n)? ")
         canReplenishStock = input("Does it allow to replenish stock (y/n)? ")
         filtered_permissions = filter(lambda x: 
-                                    (not permissionName or x["username"] == permissionName) and
+                                    (not permissionName or x["name"] == permissionName) and
                                     (not canManagerUser or x["canManagerUser"] == canManagerUser) and
                                     (not canManagePermission or x["canManagePermission"] == canManagePermission) and
                                     (not canManageItem or x["canManageItem"] == canManageItem) and
@@ -104,7 +104,7 @@ class PermissionPage:
         if (permission is None):
             showMessageAndRedirectToMainPage(self, message=f"Permission ({permissionId}) not found ...")
 
-        updatePermissionName = input(f"New permission name: ") or permission["name"]
+        updatePermissionName = input("New permission name: ") or permission["name"]
         updateCanManagerUser = input("Can it manage user (y/n)? ")
         updateCanManagePermission = input("Can it manage permission (y/n)? ")
         updateCanManageItem = input("Can it manage item (y/n)? ")

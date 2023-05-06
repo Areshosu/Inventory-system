@@ -34,7 +34,7 @@ class DbContext:
                 break
 
         if (self.selectedDatabase == None):
-            raise ValueError("Database not found.")
+            raise DbException("Database not found.")
         
         self.load()
         pass
@@ -108,7 +108,7 @@ class DbContext:
         EditingEntityId = id
         
         if (EditingEntityId is None):
-            raise ValueError("Update Entity Id not found.")
+            raise DbException("Update Entity Id not found.")
         
         [data.update(values) for data in self.retrievedRecords if data["Id"] == EditingEntityId]
 

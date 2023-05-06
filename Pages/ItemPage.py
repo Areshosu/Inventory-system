@@ -102,7 +102,7 @@ class ItemPage:
         updateUnit = input("What's it item unit: ") or item["unit"]
         updatePrice = float(input("What's it item price: ") or item["price"])
         updateMinimum = int(input("What's it item minimum: ") or item["minimum"])
-        updateQuantity = item["quantity"]
+        updateQuantity = item["quantity"] # Quantity are not allow to change
 
         self.itemManager.updateAsync( itemId, {
                 "code": updateCode,
