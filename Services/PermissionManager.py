@@ -9,3 +9,8 @@ class PermissionManager:
     
     def findById(self, id: str):
         return self.dbContext.findAsync(id)
+    
+    def deleteAsync(self, id: str):
+        self.dbContext.remove(id)
+        self.dbContext.saveChangesAsync()
+        pass

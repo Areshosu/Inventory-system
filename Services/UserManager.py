@@ -1,5 +1,6 @@
 from Services.Console import *
 from Models.User import User
+from Models.Permission import Permission
 from Services.DbContext import DbContext
 
 class UserManager:
@@ -9,7 +10,7 @@ class UserManager:
         return self.dbContext.toListAsync()
 
     def findByUserName(self, username: str):
-        return self.dbContext.firstOrDefaultAsync("username", username)
+        return self.dbContext.includeOneToOne(Permission).firstOrDefaultAsync("username", username)
     
     def findById(self, id: str):
         return self.dbContext.findAsync(id)
