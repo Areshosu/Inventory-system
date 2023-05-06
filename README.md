@@ -49,6 +49,7 @@ If you want to contribute, please take note of the current infrastructure
                 self.age          = self.dataAnnotation(age, int)
                 self.permissionId = self.dataAnnotation(permissionId, str)
         ```
+
     - Register imports and database files in DbContext service
         ```python
         # Add imports for entities
@@ -78,6 +79,7 @@ If you want to contribute, please take note of the current infrastructure
 
             def __init__(self, dbclass: Type[Entity]):
         ```
+
     - Create a new manager to manage dbContext
         ```
         proj/
