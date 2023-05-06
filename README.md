@@ -18,18 +18,16 @@ Before login, please register a user, and then select a desirable role/permissio
 If you want to contribute, please take note of the current infrastructure
 - To add new Tables 
     - You need to add new models under models (Register foreign, unique keys)
-        <pre> uniques: list[str] = [] </pre>
-        <pre> localForeigns: list[dict[str, str, str]] = [] </pre>
-        <pre> targetForeigns: list[dict[str, str, str]] = [] </pre>
-
         ```python
         class User (Entity):
+            # unique constrains
             uniques: list[str] = [
                 "username"
             ]
-        
+            # local foreign constrains
             localForeigns: list[dict[str, str, str]] = []
         
+            # linked foreign constrains
             targetForeigns: list[dict[str, str, str]] = [
                 {"column": "permissionId", "reference": "Id", "onTable": "Permission"}
             ]
@@ -52,4 +50,40 @@ If you want to contribute, please take note of the current infrastructure
                 self.permissionId = self.dataAnnotation(permissionId, str)
         ```
     - Register imports and database files in DbContext service
+        ```python
+        # Add imports for entities
+        from Models.Entity import Entity
+        from Models.Item import Item
+        from Models.Permission import Permission
+        from Models.User import User
+
+        from Services.Console import getCallerName
+        from Services.Exception.DbException import DbException
+        from typing import Type
+        import json
+        import uuid
+
+        class DbContext:
+            baseFolder: str = "Database"
+            selectedEntity: Entity
+            selectedDatabase: dict
+            retrievedRecords: list
+
+            # Register models
+            databases = [
+                {"dbName": "Item", "fileName": "ItemsTable.json"},
+                {"dbName": "Permission", "fileName": "PermissionsTable.json"},
+                {"dbName": "User", "fileName": "UsersTable.json"},
+            ]
+
+            def __init__(self, dbclass: Type[Entity]):
+        ```
     - Create a new manager to manage dbContext
+        ```
+        proj/
+        ├ mainProgram.py
+        ├ Services/
+        ├ __init__.py
+        │ ├ DbContext.py
+        │ └ NewEntityManager.py
+        ```
