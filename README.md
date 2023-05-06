@@ -18,7 +18,6 @@ Before login, please register a user, and then select a desirable role/permissio
 If you want to contribute, please take note of the current infrastructure
 - To add new Tables 
     - You need to add new models under models (Register foreign, unique keys)
-    <pre>
         ```python
         class User (Entity):
             uniques: list[str] = [
@@ -48,6 +47,5 @@ If you want to contribute, please take note of the current infrastructure
                 self.age          = self.dataAnnotation(age, int)
                 self.permissionId = self.dataAnnotation(permissionId, str)
         ```
-        </pre>
     - Register imports and database files in DbContext service
     - Create a new manager to manage dbContext
