@@ -1,5 +1,7 @@
 # How to use
 ![Python 3.10.10](https://img.shields.io/badge/python-3.10.10-blue.svg)
+![Project Status](https://img.shields.io/badge/status-active-brightgreen.svg)
+![Project Stability](https://img.shields.io/badge/stability-stable-brightgreen.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Before using this console app, please ensure you've ran the compulsary executables like seeders for inital setup
@@ -14,6 +16,7 @@ Before using this console app, please ensure you've ran the compulsary executabl
 ```bash
 py -m Database.Seeders.Seeder
 py MainProgram.py # To start the mainApp
+py -m MainProgram.py # Incase it doesn't work
 ```
 
 ## Usage
