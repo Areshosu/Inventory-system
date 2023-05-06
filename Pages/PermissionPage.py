@@ -78,6 +78,7 @@ class PermissionPage:
         newCanManagerUser = input("Can it manage user (y/n)? ")
         newCanManagePermission = input("Can it manage permission (y/n)? ")
         newCanManageItem = input("Can it manage item (y/n)? ")
+        newCanManageCategory = input("Can it manage category (y/n)? ")
         newCanStockTaking = input("Can it take stock (y/n)? ")
         newCanSearchItem = input("Can it search item (y/n)? ")
         newCanViewReplenishStockList = input("Can it view replenish stock list (y/n)? ")
@@ -88,6 +89,7 @@ class PermissionPage:
                    "canManageUser": True if newCanManagerUser is "n" else False,
                    "canManagePermission": True if newCanManagePermission is "n" else False,
                    "canManageItem": True if newCanManageItem is "n" else False,
+                   "canManageCategory": True if newCanManageCategory is "n" else False,
                    "canStockTaking": True if newCanStockTaking is "n" else False,
                    "canSearchItem": True if newCanSearchItem is "n" else False,
                    "canViewReplenishStockList":  True if newCanViewReplenishStockList is "n" else False,
@@ -106,6 +108,7 @@ class PermissionPage:
         updateCanManagerUser = input("Can it manage user (y/n)? ")
         updateCanManagePermission = input("Can it manage permission (y/n)? ")
         updateCanManageItem = input("Can it manage item (y/n)? ")
+        updateCanManageCategory = input("Can it manage category (y/n)? ")
         updateCanStockTaking = input("Can it take stock (y/n)? ")
         updateCanSearchItem = input("Can it search item (y/n)? ")
         updateCanViewReplenishStockList = input("Can it view replenish stock list (y/n)? ")
@@ -116,6 +119,7 @@ class PermissionPage:
                    "canManageUser": True if updateCanManagerUser is "n" else False,
                    "canManagePermission": True if updateCanManagePermission is "n" else False,
                    "canManageItem": True if updateCanManageItem is "n" else False,
+                   "canManageCategory": True if updateCanManageCategory is "n" else False,
                    "canStockTaking": True if updateCanStockTaking is "n" else False,
                    "canSearchItem": True if updateCanSearchItem is "n" else False,
                    "canViewReplenishStockList":  True if updateCanViewReplenishStockList is "n" else False,

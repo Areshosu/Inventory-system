@@ -8,7 +8,7 @@ Before using this console app, please ensure you've ran the compulsary executabl
 
 ## Requirements
 
-- 2Gb ram Windows 10
+- 2 gb ram Windows 10
 - Python 3.10.10 or above
 
 ## Initial configuration

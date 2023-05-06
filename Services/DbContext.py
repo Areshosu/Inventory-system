@@ -1,4 +1,5 @@
 from Models.Entity import Entity
+from Models.Category import Category
 from Models.Item import Item
 from Models.Permission import Permission
 from Models.User import User
@@ -18,6 +19,7 @@ class DbContext:
     # Register models
     databases = [
         {"dbName": "Item", "fileName": "ItemsTable.json"},
+        {"dbName": "Category", "fileName": "CategoriesTable.json"},
         {"dbName": "Permission", "fileName": "PermissionsTable.json"},
         {"dbName": "User", "fileName": "UsersTable.json"},
     ]

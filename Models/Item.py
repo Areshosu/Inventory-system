@@ -3,7 +3,9 @@ from Models.Entity import Entity
 class Item (Entity):
     uniques: list[str] = []
     localForeigns: list[dict[str, str, str]] = []
-    targetForeigns: list[dict[str, str, str]] = []
+    targetForeigns: list[dict[str, str, str]] = [
+        {"column": "categoryId", "reference": "Id", "onTable": "Category"}
+    ]
 
     def __init__ (self, 
                     category_id: str,
