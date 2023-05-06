@@ -25,7 +25,7 @@ If you want to contribute, please take note of the current infrastructure
                 "username"
             ]
         
-            localForeigns: list[dict[str, str, str]] = []
+    <mark>  localForeigns: list[dict[str, str, str]] = [] </mark>
         
             targetForeigns: list[dict[str, str, str]] = [
                 {"column": "permissionId", "reference": "Id", "onTable": "Permission"}
