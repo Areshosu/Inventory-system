@@ -1,6 +1,6 @@
 # How to use
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![Python 3.10.10](https://img.shields.io/badge/python-3.10.10-blue.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Before using this console app, please ensure you've ran the compulsary executables like seeders for inital setup
 
