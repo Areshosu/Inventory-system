@@ -1,6 +1,11 @@
 # How to use
 Before using this console app, please ensure you've ran the compulsary executables like seeders for inital setup
 
+## Requirements
+
+- 2Gb ram Windows 10
+- Python 3.10.10 or above
+
 ## Initial configuration
 
 ```bash
