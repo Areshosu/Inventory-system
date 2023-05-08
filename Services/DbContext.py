@@ -159,7 +159,7 @@ class DbContext:
                     if relationRow[localRelationshipDB["reference"]] == savingRow[localRelationshipDB["column"]]:
                         haveValidRelation = True; break
                 if (haveValidRelation == False):
-                    raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {localRelationshipDB.__name__}, at column {localRelationshipDB['column']} on column {localRelationshipDB['reference']} ({savingRow[localRelationshipDB['column']]})")
+                    raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {localRelationshipDB['onTable']}, at column {localRelationshipDB['column']} on column {localRelationshipDB['reference']} ({savingRow[localRelationshipDB['column']]})")
                 
 
         for targetForeign in targetForeigns:
@@ -171,5 +171,5 @@ class DbContext:
                     if relationRow[targetRelationshipDB["reference"]] == savingRow[targetRelationshipDB["column"]]:
                         haveValidRelation = True; break
                 if (haveValidRelation == False):
-                    raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {targetRelationshipDB.__name__}, at column {targetRelationshipDB['column']} on column {targetRelationshipDB['reference']} ({savingRow[targetRelationshipDB['column']]})") 
+                    raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {targetRelationshipDB['onTable']}, at column {targetRelationshipDB['column']} on column {targetRelationshipDB['reference']} ({savingRow[targetRelationshipDB['column']]})") 
         pass
