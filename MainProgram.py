@@ -1,9 +1,17 @@
 from Services.Console import *
 from Services.UserManager import UserManager
 from Services.PermissionManager import PermissionManager
-from Services.InventoryManager import InventoryManager
+from Services.ItemManager import ItemManager
+from Services.CategoryManager import CategoryManager
 
-from Pages.UserPage import UserPage
+# Admin-only pages
+from Pages.Admin.ItemPage import ItemPage
+from Pages.Admin.CategoryPage import CategoryPage
+from Pages.Admin.UserPage import UserPage
+from Pages.Admin.PermissionPage import PermissionPage
+
+# Others pages
+from Pages.Others.SearchItemPage import SearchItemPage
 
 while True:
     clear_console()
@@ -12,9 +20,10 @@ while True:
     CurrentUserPermission = None
     
     # Injecting modules
+    itemManager = ItemManager()
     userManager = UserManager()
     permissionManager = PermissionManager()
-    inventoryManager = InventoryManager()
+    categoryManager = CategoryManager()
     
     wantsToRegister = int(input("Would you like to login or register?\n" \
                             "[0] Login \n" \
@@ -62,51 +71,56 @@ while True:
     AuthenticatedUser = userManager.findByUserName(username)
     CurrentUserPermission = permissionManager.findById(AuthenticatedUser["permissionId"])
     
-    clear_console()
-    whatToDo = int(input("How would you like to access this console? \n\n" \
-                        "[0] Manage Users \n" \
-                        "[1] Manage Item \n" \
-                        "[2] Manage Permission \n" \
-                        "[3] Stock Taking \n" \
-                        "[4] Search Item \n" \
-                        "[5] View replenish Item Stock List \n" \
-                        "[6] Replenish Item Stock List \n\n" \
-                        "Select Item [0-6] (Default 0): ") or 0)
+    while True:
+        clear_console()
+        whatToDo = 0 # Reset option on return
+        whatToDo = int(input("How would you like to access this console? \n\n" \
+                            "[0] Manage Users \n" \
+                            "[1] Manage Items \n" \
+                            "[2] Manage Categories \n" \
+                            "[3] Manage Permissions \n" \
+                            "[4] Stock Taking \n" \
+                            "[5] Search Item \n" \
+                            "[6] View replenish Item Stock List \n" \
+                            "[7] Replenish Item Stock List \n" \
+                            "[8] Logout/Switch account \n\n" \
+                            "Select Item [0-7] (Default 0): ") or 0)
 
-    # Management
+        # Management
 
-    if (whatToDo is 1 and  CurrentUserPermission["canManageItem"] is True):
-        WhatToManage = int(input("How would you like to manage Items? \n\n" \
-                        "[0] Show Item List \n" \
-                        "[1] Find Item \n" \
-                        "[2] Create Item \n" \
-                        "[3] Delete Item \n\n" \
-                        "Select Item [0-3] (Default 0): ") or 0)
-        pass
+        if (whatToDo is 1 and  CurrentUserPermission["canManageItem"] is True):
+            ItemPage(itemManager, categoryManager)
+            pass
 
-    elif (whatToDo is 2 and  CurrentUserPermission["canManagePermission"] is True):
-        WhatToManage = int(input("How would you like to manage Permissions? \n\n" \
-                        "[0] Show Permission List \n" \
-                        "[1] Find Permission \n" \
-                        "[2] Create Permission \n" \
-                        "[3] Delete Permission \n\n" \
-                        "Select Item [0-3] (Default 0): ") or 0)
-        pass
+        elif (whatToDo is 2 and  CurrentUserPermission["canManageCategory"] is True):
+            CategoryPage(categoryManager)
 
-    elif (whatToDo is 3 and  CurrentUserPermission["canStockTaking"] is True):
-        pass
+        elif (whatToDo is 3 and  CurrentUserPermission["canManagePermission"] is True):
+            PermissionPage(permissionManager)
+            pass
 
-    elif (whatToDo is 4 and  CurrentUserPermission["canSearchItem"] is True):
-        pass
+        elif (whatToDo is 4 and  CurrentUserPermission["canStockTaking"] is True):
+            # yet to be implemented
+            pass
 
-    elif (whatToDo is 5 and  CurrentUserPermission["canViewReplenishStockList"] is True):
-        pass
+        elif (whatToDo is 5 and  CurrentUserPermission["canSearchItem"] is True):
+            SearchItemPage(itemManager, categoryManager)
+            pass
 
-    elif (whatToDo is 6 and  CurrentUserPermission["canReplenishStock"] is True):
-        pass
-    
-    elif (CurrentUserPermission["canManageUser"] is True):
-        UserPage(userManager, permissionManager)
-        pass    
-    else:
-        showMessageAndRestart("Insufficient Permission ...")
+        elif (whatToDo is 6 and  CurrentUserPermission["canViewReplenishStockList"] is True):
+            # yet to be implemented
+            pass
+
+        elif (whatToDo is 7 and  CurrentUserPermission["canReplenishStock"] is True):
+            # yet to be implemented
+            pass
+        elif (whatToDo is 8):
+            showMessageAndRestart("Logging out ...")        
+            pass
+
+        elif (CurrentUserPermission["canManageUser"] is True):
+            UserPage(userManager, permissionManager)
+            pass
+
+        else:
+            showMessageAndRestart("Insufficient Permission ...")

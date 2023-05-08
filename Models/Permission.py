@@ -1,7 +1,9 @@
 from Models.Entity import Entity
 
 class Permission (Entity):
-    uniques: list[str] = []
+    uniques: list[str] = [
+        "name"
+    ]
     localForeigns: list[dict[str, str, str]] = [
         {"column": "Id", "reference": "permissionId", "onTable": "User"}
     ]
@@ -14,6 +16,7 @@ class Permission (Entity):
                    "canManageUser":True,
                    "canManagePermission":True,
                    "canManageItem":True,
+                   "canManageCategory": True,
                    "canStockTaking":True,
                    "canSearchItem":True,
                    "canViewReplenishStockList": True,
@@ -23,6 +26,7 @@ class Permission (Entity):
                    "canManageUser":False,
                    "canManagePermission":False,
                    "canManageItem":False,
+                   "canManageCategory": False,
                    "canStockTaking":True,
                    "canSearchItem":True,
                    "canViewReplenishStockList": False,
@@ -32,6 +36,7 @@ class Permission (Entity):
                    "canManageUser":False,
                    "canManagePermission":False,
                    "canManageItem":False,
+                   "canManageCategory": False,
                    "canStockTaking":False,
                    "canSearchItem":True,
                    "canViewReplenishStockList": True,
@@ -42,6 +47,7 @@ class Permission (Entity):
                     name: str,
                     canManageUser: bool,
                     canManageItem: bool,
+                    canManageCategory: bool,
                     canManagePermission: bool,
                     canStockTaking: bool,
                     canSearchItem: bool,
@@ -56,6 +62,7 @@ class Permission (Entity):
         self.canManageUser =             self.dataAnnotation(canManageUser, bool)
         self.canManagePermission =       self.dataAnnotation(canManagePermission, bool)
         self.canManageItem =             self.dataAnnotation(canManageItem, bool)
+        self.canManageCategory =         self.dataAnnotation(canManageCategory, bool)
         self.canStockTaking =            self.dataAnnotation(canStockTaking, bool)
         self.canSearchItem =             self.dataAnnotation(canSearchItem, bool)
         self.canViewReplenishStockList = self.dataAnnotation(canViewReplenishStockList, bool)
