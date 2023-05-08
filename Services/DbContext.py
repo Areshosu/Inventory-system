@@ -164,7 +164,7 @@ class DbContext:
 
         for targetForeign in targetForeigns:
             targetRelationEntity = globals()[targetForeign["onTable"]]
-            targetRelationshipDB = self._loadRelatedRecords(targetRelationEntity, isParentForeign=True)
+            targetRelationshipDB = self._loadRelatedRecords(targetRelationEntity, isParentForeign=True) # load relationRecords & returns relationDB
             for relationRow in self.retrievedRelationRecords:
                 haveValidRelation = False
                 for savingRow in onSavingRecords:

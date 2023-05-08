@@ -1,7 +1,9 @@
 from Models.Entity import Entity
 
 class Permission (Entity):
-    uniques: list[str] = []
+    uniques: list[str] = [
+        "name"
+    ]
     localForeigns: list[dict[str, str, str]] = [
         {"column": "Id", "reference": "permissionId", "onTable": "User"}
     ]

@@ -1,7 +1,9 @@
 from Models.Entity import Entity
 
 class Item (Entity):
-    uniques: list[str] = []
+    uniques: list[str] = [
+        "name"
+    ]
     localForeigns: list[dict[str, str, str]] = []
     targetForeigns: list[dict[str, str, str]] = [
         {"column": "categoryId", "reference": "Id", "onTable": "Category"}
