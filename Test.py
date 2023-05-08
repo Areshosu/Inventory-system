@@ -9,7 +9,7 @@ from Services.PermissionManager import PermissionManager
 userManager = UserManager()
 permissionManager = PermissionManager()
 
-permissionManager.deleteAsync("e02feaee-2a37-4c96-b508-60a7644e9966")
+permissionManager.deleteAsync("4dcdd026-c5e3-4961-8459-f03d4b417399")
 
 # userManager.createAsync({
 #     "username": "Alex123",

@@ -104,7 +104,7 @@ class PermissionPage:
         if (permission is None):
             showMessageAndRedirectToMainPage(self, message=f"Permission ({permissionId}) not found ...")
 
-        updatePermissionName = input("New permission name: ") or permission["name"]
+        updatePermissionName = input("Update permission name: ") or permission["name"]
         updateCanManagerUser = input("Can it manage user (y/n)? ") or self._boolConvertToYesOrNo(permission["canManageUser"])
         updateCanManagePermission = input("Can it manage permission (y/n)? ") or self._boolConvertToYesOrNo(permission["canManagePermission"])
         updateCanManageItem = input("Can it manage item (y/n)? ") or self._boolConvertToYesOrNo(permission["canManageItem"])

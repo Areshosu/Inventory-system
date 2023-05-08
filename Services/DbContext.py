@@ -138,10 +138,8 @@ class DbContext:
         onSavingRecords = self.retrievedRecords
 
         uniqueConstraints = self.selectedEntity.uniques
-        foreigns = [
-            self.selectedEntity.localForeigns,
-            self.selectedEntity.targetForeigns
-        ]
+        localForeigns = self.selectedEntity.localForeigns
+        targetForeigns = self.selectedEntity.targetForeigns
 
         # Unique constrains
         for uniqueColumn in uniqueConstraints:
@@ -150,24 +148,28 @@ class DbContext:
                 raise DbException(f"Duplicated unique constraint ({uniqueColumn})")
         
         # Foreign constrains
-        for i, foreignConstrain in enumerate(foreigns):
-            isParentForeign = False if i == 0 else True
-            for localForeign in foreignConstrain:
-                relationEntity = globals()[localForeign["onTable"]]
-                relationshipDB = self._loadRelatedRecords(relationEntity, isParentForeign) # load relationRecords & returns relationDB
+
+        for localRelation in localForeigns:
+            localRelationEntity = globals()[localRelation["onTable"]]
+            localRelationshipDB = self._loadRelatedRecords(localRelationEntity, isParentForeign=False) # load relationRecords & returns relationDB
+                
+            for relationRow in self.retrievedRelationRecords:
+                haveValidRelation = False
                 for savingRow in onSavingRecords:
-                    if (isParentForeign == True):
-                        haveValidRelation = False
-                        for relation in self.retrievedRelationRecords:
-                            if savingRow[relationshipDB["column"]] == relation[relationshipDB["reference"]]:
-                                haveValidRelation = True; break
-                        if (haveValidRelation == False):
-                            raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {relationEntity.__name__}, at column {relationshipDB['column']} on column {relationshipDB['reference']} ({savingRow[relationshipDB['column']]})")
-                    else:
-                        haveValidRelation = True
-                        for relation in self.retrievedRelationRecords:
-                            if savingRow[relationshipDB["column"]] == relation[relationshipDB["reference"]]:
-                                haveValidRelation = False; break
-                        if (haveValidRelation == False):
-                            raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {relationEntity.__name__}, at column {relationshipDB['column']} on column {relationshipDB['reference']} ({savingRow[relationshipDB['column']]})")
-            pass
+                    if relationRow[localRelationshipDB["reference"]] == savingRow[localRelationshipDB["column"]]:
+                        haveValidRelation = True; break
+                if (haveValidRelation == False):
+                    raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {localRelationshipDB.__name__}, at column {localRelationshipDB['column']} on column {localRelationshipDB['reference']} ({savingRow[localRelationshipDB['column']]})")
+                
+
+        for targetForeign in targetForeigns:
+            targetRelationEntity = globals()[targetForeign["onTable"]]
+            targetRelationshipDB = self._loadRelatedRecords(targetRelationEntity, isParentForeign=True)
+            for relationRow in self.retrievedRelationRecords:
+                haveValidRelation = False
+                for savingRow in onSavingRecords:
+                    if relationRow[localRelationshipDB["reference"]] == savingRow[localRelationshipDB["column"]]:
+                        haveValidRelation = True; break
+                if (haveValidRelation == False):
+                    raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {targetRelationshipDB.__name__}, at column {targetRelationshipDB['column']} on column {targetRelationshipDB['reference']} ({savingRow[targetRelationshipDB['column']]})") 
+        pass
