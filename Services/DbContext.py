@@ -165,11 +165,11 @@ class DbContext:
         for targetForeign in targetForeigns:
             targetRelationEntity = globals()[targetForeign["onTable"]]
             targetRelationshipDB = self._loadRelatedRecords(targetRelationEntity, isParentForeign=True) # load relationRecords & returns relationDB
-            for relationRow in self.retrievedRelationRecords:
+            for savingRow in onSavingRecords:
                 haveValidRelation = False
-                for savingRow in onSavingRecords:
+                for relationRow in self.retrievedRelationRecords:
                     if relationRow[targetRelationshipDB["reference"]] == savingRow[targetRelationshipDB["column"]]:
                         haveValidRelation = True; break
                 if (haveValidRelation == False):
-                    raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {targetRelationshipDB['onTable']}, at column {targetRelationshipDB['column']} on column {targetRelationshipDB['reference']} ({savingRow[targetRelationshipDB['column']]})") 
+                    raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {targetRelationshipDB['onTable']}, at column {targetRelationshipDB['column']} on column {targetRelationshipDB['reference']} ({savingRow[targetRelationshipDB['column']]})")
         pass
