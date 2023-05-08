@@ -86,14 +86,14 @@ class PermissionPage:
 
         self.permissionManager.createAsync({
                    "name": newPermissionName,
-                   "canManageUser": True if newCanManagerUser is "n" else False,
-                   "canManagePermission": True if newCanManagePermission is "n" else False,
-                   "canManageItem": True if newCanManageItem is "n" else False,
-                   "canManageCategory": True if newCanManageCategory is "n" else False,
-                   "canStockTaking": True if newCanStockTaking is "n" else False,
-                   "canSearchItem": True if newCanSearchItem is "n" else False,
-                   "canViewReplenishStockList":  True if newCanViewReplenishStockList is "n" else False,
-                   "canReplenishStock": True if newCanReplenishStock is "n" else False
+                   "canManageUser": self._yesOrNoConvertToBool(newCanManagerUser),
+                   "canManagePermission": self._yesOrNoConvertToBool(newCanManagePermission),
+                   "canManageItem": self._yesOrNoConvertToBool(newCanManageItem),
+                   "canManageCategory": self._yesOrNoConvertToBool(newCanManageCategory),
+                   "canStockTaking": self._yesOrNoConvertToBool(newCanStockTaking),
+                   "canSearchItem": self._yesOrNoConvertToBool(newCanSearchItem),
+                   "canViewReplenishStockList":  self._yesOrNoConvertToBool(newCanViewReplenishStockList),
+                   "canReplenishStock": self._yesOrNoConvertToBool(newCanReplenishStock)
         })
         showMessageAndRedirectToMainPage(self, message=f"Permission successfully created ...")
 
@@ -105,25 +105,25 @@ class PermissionPage:
             showMessageAndRedirectToMainPage(self, message=f"Permission ({permissionId}) not found ...")
 
         updatePermissionName = input("New permission name: ") or permission["name"]
-        updateCanManagerUser = input("Can it manage user (y/n)? ")
-        updateCanManagePermission = input("Can it manage permission (y/n)? ")
-        updateCanManageItem = input("Can it manage item (y/n)? ")
-        updateCanManageCategory = input("Can it manage category (y/n)? ")
-        updateCanStockTaking = input("Can it take stock (y/n)? ")
-        updateCanSearchItem = input("Can it search item (y/n)? ")
-        updateCanViewReplenishStockList = input("Can it view replenish stock list (y/n)? ")
-        updateCanReplenishStock = input("Can it replenish stock (y/n)? ")
+        updateCanManagerUser = input("Can it manage user (y/n)? ") or self._boolConvertToYesOrNo(permission["canManageUser"])
+        updateCanManagePermission = input("Can it manage permission (y/n)? ") or self._boolConvertToYesOrNo(permission["canManagePermission"])
+        updateCanManageItem = input("Can it manage item (y/n)? ") or self._boolConvertToYesOrNo(permission["canManageItem"])
+        updateCanManageCategory = input("Can it manage category (y/n)? ") or self._boolConvertToYesOrNo(permission["canManageCategory"])
+        updateCanStockTaking = input("Can it take stock (y/n)? ") or self._boolConvertToYesOrNo(permission["canStockTaking"])
+        updateCanSearchItem = input("Can it search item (y/n)? ") or self._boolConvertToYesOrNo(permission["canSearchItem"])
+        updateCanViewReplenishStockList = input("Can it view replenish stock list (y/n)? ") or self._boolConvertToYesOrNo(permission["canViewReplenishStockList"])
+        updateCanReplenishStock = input("Can it replenish stock (y/n)? ") or self._boolConvertToYesOrNo(permission["canReplenishStock"])
 
         self.permissionManager.updateAsync( permissionId, {
                    "name": updatePermissionName,
-                   "canManageUser": True if updateCanManagerUser is "n" else False,
-                   "canManagePermission": True if updateCanManagePermission is "n" else False,
-                   "canManageItem": True if updateCanManageItem is "n" else False,
-                   "canManageCategory": True if updateCanManageCategory is "n" else False,
-                   "canStockTaking": True if updateCanStockTaking is "n" else False,
-                   "canSearchItem": True if updateCanSearchItem is "n" else False,
-                   "canViewReplenishStockList":  True if updateCanViewReplenishStockList is "n" else False,
-                   "canReplenishStock": True if updateCanReplenishStock is "n" else False
+                   "canManageUser": self._yesOrNoConvertToBool(updateCanManagerUser),
+                   "canManagePermission": self._yesOrNoConvertToBool(updateCanManagePermission),
+                   "canManageItem": self._yesOrNoConvertToBool(updateCanManageItem),
+                   "canManageCategory": self._yesOrNoConvertToBool(updateCanManageCategory),
+                   "canStockTaking": self._yesOrNoConvertToBool(updateCanStockTaking),
+                   "canSearchItem": self._yesOrNoConvertToBool(updateCanSearchItem),
+                   "canViewReplenishStockList":  self._yesOrNoConvertToBool(updateCanViewReplenishStockList),
+                   "canReplenishStock": self._yesOrNoConvertToBool(updateCanReplenishStock)
         })
         showMessageAndRedirectToMainPage(self, message=f"Permission ({permissionId}) successfully updated ...")
 
@@ -131,3 +131,15 @@ class PermissionPage:
         permissionId = input("Which permission would you like to delete, Please input Id: ")
         self.permissionManager.deleteAsync(permissionId)
         showMessageAndRedirectToMainPage(self, message=f"Permission ({permissionId}) successfully removed ...")
+
+    def _yesOrNoConvertToBool(self, option: str):
+        if (option is "y" or "Y"):
+            return True
+        else:
+            return False
+        
+    def _boolConvertToYesOrNo(self, option: bool):
+        if (option is True):
+            return "y"
+        else:
+            return "n"
