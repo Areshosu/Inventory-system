@@ -1,3 +1,4 @@
+from Models.Category import Category
 from Models.Item import Item
 from Services.DbContext import DbContext
 
@@ -5,7 +6,7 @@ class ItemManager:
     dbContext = DbContext(Item)
 
     def getAsync(self):
-        return self.dbContext.toListAsync()
+        return self.dbContext.includeOneToOne(Category).toListAsync()
 
     def findByItemName(self, itemName: str):
         return self.dbContext.firstOrDefaultAsync("name", itemName)
