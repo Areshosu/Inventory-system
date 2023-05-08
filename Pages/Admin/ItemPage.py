@@ -18,11 +18,14 @@ class ItemPage:
                                 "[1] Find Item \n" \
                                 "[2] Create Item \n" \
                                 "[3] Update Item \n" \
-                                "[4] Delete Item \n\n" \
-                                "Select Item [0-3] (Default 0): ") or 0)
+                                "[4] Delete Item \n" \
+                                "[5] Return to Main Menu \n\n" \
+                                "Select Item [0-5] (Default 0): ") or 0)
         
         clear_console()
-        if (option == 4):
+        if (option == 5):
+            return
+        elif (option == 4):
             self._deleteItemPage()
         elif (option == 3):
             self._updateItemPage()

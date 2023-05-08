@@ -15,11 +15,14 @@ class PermissionPage:
                                 "[1] Find Permission \n" \
                                 "[2] Create Permission \n" \
                                 "[3] Update Permission \n" \
-                                "[4] Delete Permission \n\n" \
+                                "[4] Delete Permission \n" \
+                                "[5] Return to Main Menu \n\n" \
                                 "Select Item [0-3] (Default 0): ") or 0)
         
         clear_console()
-        if (option == 4):
+        if (option == 5):
+            return
+        elif (option == 4):
             self._deletePermissionPage()
         elif (option == 3):
             self._updatePermissionPage()

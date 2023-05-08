@@ -15,11 +15,14 @@ class CategoryPage:
                                 "[1] Find Category \n" \
                                 "[2] Create Category \n" \
                                 "[3] Update Category \n" \
-                                "[4] Delete Category \n\n" \
-                                "Select Category [0-3] (Default 0): ") or 0)
+                                "[4] Delete Category \n" \
+                                "[5] Return to Main Menu \n\n" \
+                                "Select Category [0-5] (Default 0): ") or 0)
         
         clear_console()
-        if (option == 4):
+        if (option == 5):
+            return
+        elif (option == 4):
             self._deleteCategoryPage()
         elif (option == 3):
             self._updateCategoryPage()

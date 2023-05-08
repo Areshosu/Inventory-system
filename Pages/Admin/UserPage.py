@@ -17,10 +17,13 @@ class UserPage:
                                 "[1] Find User \n" \
                                 "[2] Create User \n" \
                                 "[3] Update User \n" \
-                                "[4] Delete User \n\n" \
-                                "Select Item [0-3] (Default 0): ") or 0)
+                                "[4] Delete User \n" \
+                                "[5] Return to Main Menu \n\n" \
+                                "Select Item [0-5] (Default 0): ") or 0)
         
         clear_console()
+        if (option == 5):
+            return
         if (option == 4):
             self._deleteUserPage()
         elif (option == 3):
