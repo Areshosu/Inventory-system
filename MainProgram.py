@@ -82,7 +82,7 @@ while True:
     # Management
 
     if (whatToDo is 1 and  CurrentUserPermission["canManageItem"] is True):
-        ItemPage(itemManager)
+        ItemPage(itemManager, categoryManager)
         pass
 
     elif (whatToDo is 2 and  CurrentUserPermission["canManageCategory"] is True):

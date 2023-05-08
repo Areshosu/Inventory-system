@@ -8,7 +8,7 @@ class Item (Entity):
     ]
 
     def __init__ (self, 
-                    category_id: str,
+                    categoryId: str,
                     code: str, 
                     name: str, 
                     description: str, 
@@ -21,7 +21,7 @@ class Item (Entity):
         if (len(Id) != 0):
             self.Id   = self.dataAnnotation(Id, str)
 
-        self.category_id =   self.dataAnnotation(category_id, str)
+        self.categoryId =   self.dataAnnotation(categoryId, str)
         self.code =          self.dataAnnotation(code, str)
         self.name =          self.dataAnnotation(name, str)
         self.description =   self.dataAnnotation(description, str)

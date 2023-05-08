@@ -1,11 +1,14 @@
 import json
 from typing import Type
 from Services.Console import *
+from Services.CategoryManager import CategoryManager
 from Services.ItemManager import ItemManager
 
 class ItemPage:
-    def __init__(self, itemManager: Type[ItemManager]):
+    def __init__(self, itemManager: Type[ItemManager], 
+                        categoryManager: Type[CategoryManager]):
         self.itemManager = itemManager
+        self.categoryManager = categoryManager
         self.menuPage()
 
     def menuPage(self):
@@ -75,6 +78,16 @@ class ItemPage:
         newUnit = input("What's it item unit: ")
         newPrice = float(input("What's it item price: ") or 0)
         newMinimum = int(input("What's it item minimum: ") or 0)
+        categories = self.categoryManager.getAsync()
+
+        if (len(categories) == 0):
+            return showMessageAndRedirectToMainPage(self, message="Please create at least a category before proceeding")
+        else:
+            print("Select categories")
+
+        for i, category in enumerate(categories):
+            print(f"({i}) - {json.dumps(category)}")
+        newCategorySelection = int(input("Please type in your selection eg. 5: "), 0)
 
         self.itemManager.createAsync({
                 "code": newCode,
@@ -83,7 +96,8 @@ class ItemPage:
                 "unit": newUnit,
                 "price": newPrice,
                 "quantity": 0,
-                "minimum": newMinimum
+                "minimum": newMinimum,
+                "categoryId": categories[newCategorySelection]["Id"]
             })
         input("\nItem created successfully ...")
         showMessageAndRedirectToMainPage(self, message="Redirecting you to menu page ...")
@@ -93,7 +107,7 @@ class ItemPage:
         item = self.itemManager.findById(itemId)
 
         if (item is None):
-            showMessageAndRedirectToMainPage(self, message=f"Item ({itemId}) not found ...")
+            return showMessageAndRedirectToMainPage(self, message=f"Item ({itemId}) not found ...")
 
         print("Please fill up the form, except for those you want it to remain")
         updateCode = input("What's it code: ") or item["code"]
@@ -103,6 +117,12 @@ class ItemPage:
         updatePrice = float(input("What's it item price: ") or item["price"])
         updateMinimum = int(input("What's it item minimum: ") or item["minimum"])
         updateQuantity = item["quantity"] # Quantity are not allow to change
+        categories = self.categoryManager.getAsync()
+
+        print("Select categories")
+        for i, category in enumerate(categories):
+            print(f"({i}) - {json.dumps(category)}")
+        updateCategorySelection = int(input("Please type in your selection eg. 5, or leave it blank to remain: ") or 0)
 
         self.itemManager.updateAsync( itemId, {
                 "code": updateCode,
@@ -111,7 +131,8 @@ class ItemPage:
                 "unit": updateUnit,
                 "price": updatePrice,
                 "quantity": updateQuantity,
-                "minimum": updateMinimum
+                "minimum": updateMinimum,
+                "categoryId": categories[updateCategorySelection]["Id"] or item["categoryId"]
         })
         showMessageAndRedirectToMainPage(self, message=f"Item ({itemId}) successfully updated ...")
 
