@@ -168,7 +168,7 @@ class DbContext:
             for relationRow in self.retrievedRelationRecords:
                 haveValidRelation = False
                 for savingRow in onSavingRecords:
-                    if relationRow[localRelationshipDB["reference"]] == savingRow[localRelationshipDB["column"]]:
+                    if relationRow[targetRelationshipDB["reference"]] == savingRow[targetRelationshipDB["column"]]:
                         haveValidRelation = True; break
                 if (haveValidRelation == False):
                     raise DbException(f"Relation failed at table {self.selectedEntity.__name__} on {targetRelationshipDB.__name__}, at column {targetRelationshipDB['column']} on column {targetRelationshipDB['reference']} ({savingRow[targetRelationshipDB['column']]})") 
